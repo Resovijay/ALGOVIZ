@@ -10,6 +10,7 @@ onload = function () {
     const cities = ['Delhi', 'Mumbai', 'Gujarat', 'Goa', 'Kanpur', 'Jammu', 'Hyderabad', 'Bangalore', 'Gangtok', 'Meghalaya'];
 
     // initialise graph options
+    // this part is for design edges and the nodes i.e vertex 
     const options = {
         edges: {
             labelHighlightBold: true,
@@ -27,34 +28,49 @@ onload = function () {
                 face: 'FontAwesome',
                 code: '\uf015',
                 size: 40,
-                color: '#991133',
+                color: '#E4A5FF',        
             }
         }
     };
 
+
     // Initialize your network!
     // Network for question graph
+    // first container ka display hai jissme  random graph print hoga ui pe
     const network = new vis.Network(container);
     network.setOptions(options);
+
+
     // Network for result graph
+    //second container me display karwane ka hai ....ui pe jab shortest path find kar lega
+
     const network2 = new vis.Network(container2);
     network2.setOptions(options);
 
+
+
+
     function createData(){
+        //randomly vertices generate kar raha hai
         V = Math.floor(Math.random() * 8) + 3; // Ensures V is between 3 and 10
+        //issme basically har node ko jo randomly create ho raha hi usko city assign kar rahe hai
         let nodes = [];
         for(let i=1;i<=V;i++){
             nodes.push({id:i, label: cities[i-1]})
         }
         // Prepares vis.js style nodes for our data
+        // bas visited array bana rahe hai  taki path ka record rakh sake
         nodes = new vis.DataSet(nodes);
 
         // Creating a tree like underlying graph structure
         let edges = [];
         for(let i=2;i<=V;i++){
             let neigh = i - Math.floor(Math.random()*Math.min(i-1,3)+1); // Picks a neighbour from i-3 to i-1
-            edges.push({type: 0, from: i, to: neigh, color: 'orange',label: String(Math.floor(Math.random()*70)+31)});
+            edges.push({type: 0, from: i, to: neigh, color: 'yellow',label: String(Math.floor(Math.random()*70)+31)});
         }
+
+
+
 
         // Randomly adding new edges to graph
         // Type of bus is 0
@@ -91,7 +107,7 @@ onload = function () {
                             type: 0,
                             from: n1,
                             to: n2,
-                            color: 'orange',
+                            color: 'yellow',
                             label: String(Math.floor(Math.random() * 70) + 31)
                         });
                     } else {
@@ -136,6 +152,9 @@ onload = function () {
         container2.style.display = "inline";
         network2.setData(solveData());
     };
+       
+
+    //   yaha se niche ka part pura algorithm ka hai i.e dikstra algorithm     ////  
 
     function djikstra(graph, sz, src) {
         let vis = Array(sz).fill(0);
@@ -254,5 +273,5 @@ onload = function () {
         return tmp_edges;
     }
 
-    genNew.click();
+  //  genNew.click();
 };
